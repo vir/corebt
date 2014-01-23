@@ -1,0 +1,58 @@
+#!/bin/bash -e
+#
+# (c) vir
+#
+# Last modified: 2014-01-23 13:19:13 +0400
+#
+
+SCRIPT=$(readlink -f $0)
+#CORE_PATTERN="/var/log/core-%e-%s-%u-%g-%p-%t"
+CORE_PATTERN="|${SCRIPT} --coredump %t %p %s %u %g %e"
+SYSCTL_CONF=/etc/sysctl.conf
+TS=$( date +"%Y-%m-%d-%H%M%S" )
+
+case "$1" in
+	--help)
+		echo -e "Usage:\n\t$0 --install\n\t$0 --coredump PID SIGNAL UID GID ..."
+		exit 0
+		;;
+	--install)
+		echo "kernel.core_pattern = ${CORE_PATTERN}" >> ${SYSCTL_CONF}
+		echo "fs.suid_dumpable = 2" >> ${SYSCTL_CONF}
+		echo ${CORE_PATTERN} > /proc/sys/kernel/core_pattern
+		exit 0
+		;;
+	--coredump)
+		;;
+	*)
+		echo "Worng usage. See --help."
+		exit 1
+		;;
+esac
+
+shift
+
+NAME=${6// /}
+DIR=/var/log/core/${TS}-${NAME}
+
+mkdir ${DIR}
+
+cat > ${DIR}/inf << ***
+TS=${TS}
+TIME=$1
+PID=$2
+SIGNAL=$3
+UID=$4
+GID=$5
+NAME=$6
+***
+
+cp /proc/$2/exe ${DIR}/exe
+dmesg | tail > ${DIR}/dmesg
+cat > ${DIR}/core
+
+TMPFILE=/tmp/gdb-bt-all-$$.txt
+echo -e 'thread apply all bt\nquit' > ${TMPFILE}
+gdb --batch -x ${TMPFILE} ${DIR}/exe ${DIR}/core &> ${DIR}/stack
+rm ${TMPFILE}
+
