@@ -1,3 +1,4 @@
 debian/tmp/usr/bin/*
 debian/tmp/etc/sysctl.d/*
+debian/tmp/etc/security/limits.d/*
 

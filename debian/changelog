@@ -1,3 +1,9 @@
+corebt (1.0.1) UNRELEASED; urgency=low
+
+  * Core file limits setting added (enabled system-wide)
+
+ -- Vasily i. Redkin <vir@ctm.ru>  Thu, 23 Jan 2014 16:10:30 +0400
+
 corebt (1.0.0) unstable; urgency=low
 
   * Initial Release.

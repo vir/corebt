@@ -34,6 +34,8 @@ install-indep:
 	install -m 755 $(CURDIR)/corebt $(CURDIR)/debian/tmp/usr/bin
 	install -d $(CURDIR)/debian/tmp/etc/sysctl.d/
 	install -m 644 $(CURDIR)/debian/corebt.sysctl $(CURDIR)/debian/tmp/etc/sysctl.d/corebt.conf
+	install -d $(CURDIR)/debian/tmp/etc/security/limits.d/
+	install -m 644 $(CURDIR)/debian/corebt.limits $(CURDIR)/debian/tmp/etc/security/limits.d/corebt.conf
 
 	dh_install -i
 
