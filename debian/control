@@ -1,0 +1,13 @@
+Source: corebt
+Section: utils
+Priority: optional
+Maintainer: Vasily i. Redkin <vir@ctm.ru>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.7.3
+Homepage: https://github.com/vir/corebt
+
+Package: corebt
+Architecture: all
+Depends: gdb
+Description: Core file writing tool
+

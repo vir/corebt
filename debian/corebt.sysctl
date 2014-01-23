@@ -1,0 +1,2 @@
+kernel.core_pattern = |/usr/bin/corebt --coredump %t %p %s %u %g %e
+fs.suid_dumpable = 2
