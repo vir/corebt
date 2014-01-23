@@ -5,10 +5,6 @@
 # Last modified: 2014-01-23 13:19:13 +0400
 #
 
-SCRIPT=$(readlink -f $0)
-#CORE_PATTERN="/var/log/core-%e-%s-%u-%g-%p-%t"
-CORE_PATTERN="|${SCRIPT} --coredump %t %p %s %u %g %e"
-SYSCTL_CONF=/etc/sysctl.conf
 TS=$( date +"%Y-%m-%d-%H%M%S" )
 
 case "$1" in
@@ -17,6 +13,10 @@ case "$1" in
 		exit 0
 		;;
 	--install)
+		SCRIPT=$(readlink -f $0)
+		#CORE_PATTERN="/var/log/core-%e-%s-%u-%g-%p-%t"
+		CORE_PATTERN="|${SCRIPT} --coredump %t %p %s %u %g %e"
+		SYSCTL_CONF=${2-/etc/sysctl.conf}
 		echo "kernel.core_pattern = ${CORE_PATTERN}" >> ${SYSCTL_CONF}
 		echo "fs.suid_dumpable = 2" >> ${SYSCTL_CONF}
 		echo ${CORE_PATTERN} > /proc/sys/kernel/core_pattern
